@@ -6,6 +6,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+# for tesing
+from src.components.data_transformaton import DataTransformation
+from src.components.model_trainer import ModelTrainer 
+
 #Any input required during data injestion we give through DataIngestionConfig 
 
 @dataclass 
@@ -25,7 +29,7 @@ class DataIngestion:
             df  = pd.read_csv('notebook\data\stud.csv')
             logging.info("Read the dataset as dataframe")
 
-            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path))
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
             logging.info("Train test of data initiated")
@@ -47,4 +51,12 @@ class DataIngestion:
         
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_ar,test_ar = obj.initiate_data_ingestion()
+
+    # Data transformation 
+    data_transformation = DataTransformation()
+    train_arr,test_arr,_ = data_transformation.initiate_data_transformation(train_ar,test_ar)
+
+    modeltrainer = ModelTrainer()
+    r2 =  modeltrainer.initiate_model_trainer(train_arr,test_arr)
+    print(r2)
