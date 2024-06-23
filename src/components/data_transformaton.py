@@ -19,7 +19,7 @@ from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl")
+    preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
 
 
 class DataTransformation:
@@ -94,6 +94,7 @@ class DataTransformation:
 
             preprocessing_obj=self.get_data_transformer_object()
 
+            # We may take the target_column_name as input 
             target_column_name="math_score"
             # numerical_columns = ["writing_score", "reading_score"]
 
@@ -132,6 +133,3 @@ class DataTransformation:
         
         except Exception as e:
             raise CustomException(e,sys)
-
-
-
